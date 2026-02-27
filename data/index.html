@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="color-scheme" content="dark">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Light Alarm</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+
+    <header>
+      <div class="header-left">
+        <h1>Light Alarm</h1>
+        <div class="server-time" id="serverTime">--:--</div>
+      </div>
+      <div class="status-pill" id="statusPill">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">Connecting</span>
+      </div>
+    </header>
+
+    <!-- Alarm Card -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Alarm</h2>
+        <label class="toggle">
+          <input type="checkbox" id="alarmEnabled">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="time-row">
+        <div class="time-field">
+          <label>Wake at</label>
+          <input type="time" id="alarmTime" value="07:00">
+        </div>
+        <div class="time-field">
+          <label>Full brightness by</label>
+          <input type="time" id="endTime" value="08:00">
+        </div>
+      </div>
+
+      <div class="duration-display">
+        <span id="durationLabel">Ramp: 60 min</span>
+      </div>
+
+      <button class="btn btn-primary" id="setAlarmBtn">Set Alarm</button>
+    </div>
+
+    <!-- Color Card -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Color</h2>
+      </div>
+
+      <div class="color-presets">
+        <button class="color-swatch active" data-r="255" data-g="255" data-b="220"
+          style="background: linear-gradient(135deg, #111108, #ffffdc)">
+          <span>White</span>
+        </button>
+        <button class="color-swatch" data-r="255" data-g="180" data-b="80"
+          style="background: linear-gradient(135deg, #110a00, #ffb450)">
+          <span>Warm</span>
+        </button>
+        <button class="color-swatch" data-r="255" data-g="90" data-b="0"
+          style="background: linear-gradient(135deg, #110400, #ff5a00)">
+          <span>Amber</span>
+        </button>
+        <button class="color-swatch" data-r="200" data-g="0" data-b="0"
+          style="background: linear-gradient(135deg, #0a0000, #c80000)">
+          <span>Red</span>
+        </button>
+        <button class="color-swatch" data-r="0" data-g="80" data-b="255"
+          style="background: linear-gradient(135deg, #000011, #0050ff)">
+          <span>Blue</span>
+        </button>
+        <button class="color-swatch custom-swatch" id="customSwatch"
+          style="background: conic-gradient(from 0deg, #ff0000, #ff8800, #ffff00, #00ff00, #0088ff, #ff00ff, #ff0000)">
+          <span>Custom</span>
+        </button>
+      </div>
+
+      <div class="ramp-preview" id="rampPreview"></div>
+
+      <div class="custom-color-row" id="customColorRow" style="display:none">
+        <input type="color" id="colorPicker" value="#ff3c0a">
+        <span id="colorHex">#ff3c0a</span>
+      </div>
+    </div>
+
+    <!-- Progress Card (shown during ramp) -->
+    <div class="card progress-card" id="progressCard" style="display:none">
+      <div class="progress-header">
+        <span class="progress-label">Sunrise in progress</span>
+        <span class="progress-pct" id="progressPct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+    <!-- Manual Controls -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Manual</h2>
+      </div>
+      <div class="manual-grid">
+        <button class="manual-btn btn-on" id="btnOn">
+          <span class="btn-icon">●</span>
+          <span>On</span>
+        </button>
+        <button class="manual-btn btn-ramp" id="btnRamp">
+          <span class="btn-icon">◑</span>
+          <span>Ramp</span>
+        </button>
+        <button class="manual-btn btn-off" id="btnOff">
+          <span class="btn-icon">○</span>
+          <span>Off</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Settings Card -->
+    <div class="card settings-card">
+      <div class="card-header">
+        <h2>Settings</h2>
+      </div>
+      <div class="setting-row">
+        <label for="utcOffset">UTC Offset (hours)</label>
+        <input type="number" id="utcOffset" value="-5" min="-12" max="14" step="1">
+      </div>
+      <button class="btn btn-secondary" id="saveSettingsBtn">Save</button>
+    </div>
+
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

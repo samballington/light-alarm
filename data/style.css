@@ -1,0 +1,423 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --bg:           #0b0b12;
+  --card-bg:      #13131f;
+  --card-border:  #21213a;
+  --input-bg:     #1a1a2e;
+  --primary:      #ff8c42;
+  --primary-dim:  rgba(255, 140, 66, 0.12);
+  --primary-glow: rgba(255, 140, 66, 0.35);
+  --text:         #ededf5;
+  --text-dim:     #606078;
+  --text-mid:     #9898b8;
+  --success:      #4ade80;
+  --danger:       #f87171;
+  --radius:       18px;
+  --radius-sm:    11px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+
+.app {
+  max-width: 430px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ── Header ── */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 2px 20px;
+}
+
+.header-left h1 {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 4px;
+}
+
+.server-time {
+  font-size: 42px;
+  font-weight: 300;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -2px;
+  line-height: 1;
+}
+
+.status-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 7px 12px;
+  font-size: 12px;
+  color: var(--text-mid);
+  font-weight: 500;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text-dim);
+  flex-shrink: 0;
+  transition: background 0.4s, box-shadow 0.4s;
+}
+
+.status-dot.idle   { background: var(--text-dim); }
+.status-dot.armed  { background: var(--success); box-shadow: 0 0 8px var(--success); }
+.status-dot.fading { background: var(--primary); box-shadow: 0 0 10px var(--primary-glow); animation: pulse 1.8s ease-in-out infinite; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+/* ── Card ── */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 10px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.card-header h2 {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+/* ── Toggle ── */
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.toggle input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: #252538;
+  border-radius: 28px;
+  transition: background 0.3s;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 4px;
+  top: 4px;
+  background: #888;
+  border-radius: 50%;
+  transition: transform 0.3s, background 0.3s;
+}
+
+input:checked + .slider              { background: var(--primary); }
+input:checked + .slider::before     { transform: translateX(22px); background: #fff; }
+
+/* ── Time pickers ── */
+.time-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.time-field label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  margin-bottom: 8px;
+}
+
+.time-field input[type="time"] {
+  width: 100%;
+  background: var(--input-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 22px;
+  font-weight: 300;
+  padding: 14px 8px;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.time-field input[type="time"]:focus {
+  border-color: var(--primary);
+}
+
+.time-field input[type="time"]::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+.duration-display {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-mid);
+  margin-bottom: 18px;
+  letter-spacing: 0.2px;
+}
+
+/* ── Buttons ── */
+.btn {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.12s, opacity 0.12s;
+  letter-spacing: 0.2px;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: var(--primary);
+  color: #0d0a05;
+}
+
+.btn-primary:hover { opacity: 0.9; }
+
+.btn-secondary {
+  background: var(--input-bg);
+  color: var(--text-mid);
+  border: 1px solid var(--card-border);
+}
+
+/* ── Color swatches ── */
+.color-presets {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.color-swatch {
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 7px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+}
+
+.color-swatch span {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
+  letter-spacing: 0.3px;
+}
+
+.color-swatch.active {
+  border-color: var(--primary);
+  box-shadow: 0 0 14px var(--primary-glow);
+}
+
+/* Ramp preview bar */
+.ramp-preview {
+  height: 5px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #000000, #ff3c0a);
+  margin-bottom: 0;
+  transition: background 0.4s;
+}
+
+/* Custom color row */
+.custom-color-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.custom-color-row input[type="color"] {
+  flex: 1;
+  height: 48px;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  background: var(--input-bg);
+  cursor: pointer;
+  padding: 4px 6px;
+}
+
+.custom-color-row span {
+  font-size: 13px;
+  color: var(--text-mid);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  min-width: 58px;
+}
+
+/* ── Progress card ── */
+.progress-card {
+  border-color: rgba(255, 140, 66, 0.25);
+  background: rgba(255, 140, 66, 0.04);
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.progress-label {
+  font-size: 13px;
+  color: var(--text-mid);
+}
+
+.progress-pct {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.progress-track {
+  background: var(--input-bg);
+  border-radius: 6px;
+  height: 7px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1a0000, #ff3c0a, var(--primary));
+  border-radius: 6px;
+  width: 0%;
+  transition: width 0.6s ease;
+}
+
+/* ── Manual controls ── */
+.manual-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+
+.manual-btn {
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 18px 8px 14px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.12s, opacity 0.12s;
+}
+
+.manual-btn:active { transform: scale(0.96); }
+
+.btn-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.btn-on {
+  background: rgba(74, 222, 128, 0.1);
+  border-color: rgba(74, 222, 128, 0.2);
+  color: var(--success);
+}
+
+.btn-ramp {
+  background: var(--primary-dim);
+  border-color: rgba(255, 140, 66, 0.2);
+  color: var(--primary);
+}
+
+.btn-off {
+  background: rgba(248, 113, 113, 0.1);
+  border-color: rgba(248, 113, 113, 0.2);
+  color: var(--danger);
+}
+
+/* ── Settings ── */
+.settings-card .setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.settings-card .setting-row label {
+  font-size: 14px;
+  color: var(--text-mid);
+}
+
+.settings-card input[type="number"] {
+  width: 72px;
+  background: var(--input-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 17px;
+  padding: 9px 12px;
+  text-align: center;
+  outline: none;
+}
+
+.settings-card input[type="number"]:focus {
+  border-color: var(--primary);
+}
+
+/* Spinner remove on number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
