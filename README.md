@@ -88,6 +88,57 @@ DOCS.md             — Full technical documentation
 
 ---
 
+## Using a Different BLE Light
+
+This project can work with any BLE RGB light — you just need to find the correct commands for your specific device.
+
+### 1. Identify your device with nRF Connect
+
+Install [nRF Connect](https://www.nordicsemi.com/Products/Development-tools/nRF-Connect-for-mobile) on your phone. Scan for your light, connect to it, and note:
+
+- The **service UUID** and **characteristic UUID** you need to write to
+- The characteristic should have the **Write** property
+
+### 2. Find the command bytes
+
+BLE light controllers use proprietary byte sequences for power and color commands. Search GitHub for your device name or chip (e.g. `LEDDMX`, `ZJ-WFMB`, `SP110E`) — someone has usually already reverse-engineered them. nRF Connect also lets you manually write bytes to a characteristic and observe the result.
+
+### 3. Update the code
+
+In `src/main.cpp`, replace the UUIDs and command bytes:
+
+```cpp
+// Your device's service and characteristic UUIDs
+static NimBLEUUID serviceUUID("0000ffe0-0000-1000-8000-00805f9b34fb");
+static NimBLEUUID charUUID("0000ffe1-0000-1000-8000-00805f9b34fb");
+```
+
+```cpp
+// Your device's power on/off and color commands
+void powerOn() {
+  uint8_t cmd[] = { /* your bytes */ };
+  sendReliable(cmd, sizeof(cmd));
+}
+
+void powerOff() {
+  uint8_t cmd[] = { /* your bytes */ };
+  sendReliable(cmd, sizeof(cmd));
+}
+
+void setColor(uint8_t r, uint8_t g, uint8_t b) {
+  uint8_t cmd[] = { /* your bytes, with r, g, b inserted at the right positions */ };
+  sendCommand(cmd, sizeof(cmd));
+}
+```
+
+Also update the device name used during BLE scanning:
+
+```cpp
+if (device.getName() == "LEDDMX-00-6627") {  // replace with your device name
+```
+
+---
+
 ## Documentation
 
 For full technical details — BLE protocol, firmware architecture, API reference, ramp math, and deployment notes — see [DOCS.md](DOCS.md).
