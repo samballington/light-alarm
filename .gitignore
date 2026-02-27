@@ -5,6 +5,9 @@
 .vscode/launch.json
 .vscode/ipch
 
+# Credentials
+src/credentials.h
+
 # Claude AI
 .claude/
 memory/

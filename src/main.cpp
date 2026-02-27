@@ -4,10 +4,7 @@
 #include <NimBLEDevice.h>
 #include <LittleFS.h>
 #include <time.h>
-
-// --- WiFi Credentials ---
-const char* ssid = "WIFI_SSID";
-const char* password = "WIFI_PASSWORD";
+#include "credentials.h"
 
 // --- BLE Variables ---
 static NimBLEUUID serviceUUID("0000ffe0-0000-1000-8000-00805f9b34fb");
